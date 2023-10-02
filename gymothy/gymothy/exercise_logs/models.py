@@ -1,0 +1,36 @@
+import datetime
+
+from django.db import models
+from django.utils import timezone
+
+
+class Workout(models.Model):
+    workout_text = models.CharField(max_length=200)
+    workout_date = models.DateTimeField("date of workout")
+    def __str__(self):
+        return self.workout_text
+    
+    def was_done_recently(self):
+        return self.workout_date >= timezone.now() - datetime.timedelta(days=1)
+
+class Exercise(models.Model):
+    #related workout
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    #exercise name
+    exercise_text = models.CharField(max_length=200)
+
+    #weights, sets & reps
+    weight_num = models.IntegerField(default=0)
+    weight_type = models.CharField(default="lb",max_length=200)
+    set_num = models.IntegerField(default=1)
+    rep_num = models.IntegerField(default=10)
+    
+    def __str__(self):
+        return self.exercise_text
+
+# class Set(models.Model):
+#     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+#     weight_num = models.IntegerField(default=0)
+#     weight_type = models.CharField(max_length=200)
+#     set_num = models.IntegerField(default=1)
+#     rep_num = models.IntegerField(default=10)
