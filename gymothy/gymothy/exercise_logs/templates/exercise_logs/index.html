@@ -1,0 +1,9 @@
+{% if latest_workout_list %}
+    <ul>
+    {% for workout in latest_workout_list %}
+        <li><a href="{% url 'exercise_logs:detail' workout.id %}">{{ workout.workout_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No workouts have been complete.</p>
+{% endif %}
