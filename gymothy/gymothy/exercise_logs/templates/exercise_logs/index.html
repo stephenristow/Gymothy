@@ -1,9 +1,38 @@
-{% if latest_workout_list %}
-    <ul>
-    {% for workout in latest_workout_list %}
-        <li><a href="{% url 'exercise_logs:detail' workout.id %}">{{ workout.workout_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No workouts have been complete.</p>
-{% endif %}
+{% extends 'base.html' %}
+{% block title %}Welcome to my Exercise Logs{% endblock %}
+
+{% block content %}
+    {% if latest_workout_list %}
+        <ul>
+        {% for workout in latest_workout_list %}
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        {% comment %} <th scope="col">#</th> {% endcomment %}
+                        <th scope="col">Workout Date</th>
+                        <th scope="col">Workout Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% comment %} <th scope="row">{{ loop.counter }}</th> {% endcomment %}
+                        <td>{{ workout.workout_date }}</td>
+                        <td><a href="{% url 'exercise_logs:detail' workout.id %}">{{ workout.workout_text }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endfor %}
+    {% else %}
+        <p>No workouts have been complete.</p>  
+    {% endif %}
+    {% comment %} {% if latest_workout_list %}
+        <ul>
+        {% for workout in latest_workout_list %}
+            <li><a href="{% url 'exercise_logs:detail' workout.id %}">{{ workout.workout_text }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No workouts have been complete.</p>
+    {% endif %} {% endcomment %}
+{% endblock %}
+

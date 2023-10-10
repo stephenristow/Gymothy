@@ -4,12 +4,13 @@ from . import views
 
 app_name = "exercise_logs"
 urlpatterns = [
-    # ex: /polls/
-    path("", views.index, name="index"),
-    # ex: /polls/5/
-    path("<int:workout_id>/", views.detail, name="detail"),
-    # ex: /polls/5/results/
-    #path("<int:workout_id>/results/", views.results, name="results"),
-    # ex: /polls/5/vote/
+    # ex: /exercise_logs/
+    path("", views.IndexView.as_view(), name="index"),
+    # ex: /exercise_logs/5/
+    path("<int:pk>/", views.DetailView.as_view(), name="detail"),
+    # ex: /exercise_logs/5/results/
+    path("<int:pk>/exercise/", views.ExerciseView.as_view(), name="exercise"),
+    # ex: /exercise_logs/5/vote/
     path("<int:workout_id>/set/", views.addset, name="set"),
+    path("new_workout", views.new_workout, name="new_workout"),
 ]

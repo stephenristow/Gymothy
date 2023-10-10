@@ -1,25 +1,52 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import Http404
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django.views import generic
 
+from .forms import PostWorkout, PostExercise
 from .models import Exercise, Workout
 
-def index(request):
-    latest_workout_list = Workout.objects.order_by("-workout_date")[:5]
-    context = {"latest_workout_list": latest_workout_list}
-    #output = ", ".join([e.workout_text for e in latest_workout_list])
-    return render(request, "exercise_logs/index.html", context)
+class IndexView(generic.ListView):
+    template_name = "exercise_logs/index.html"
+    context_object_name = "latest_workout_list"
 
-def detail(request, workout_id):
-    workout = get_object_or_404(Workout, pk=workout_id)
-    return render(request, "exercise_logs/detail.html", {"workout": workout})
+    def get_queryset(self):
+        #Return workest in order by workout_date
+        return Workout.objects.order_by("-workout_date")
+
+class DetailView(generic.DetailView):
+    model = Workout
+    template_name = "exercise_logs/detail.html"
 
 
-# def results(request, workout_id):
-#     response = "You're looking at the results of workout %s."
-#     return HttpResponse(response % workout_id)
+class ExerciseView(generic.DetailView):
+    model = Exercise
+    template_name = "exercise_logs/exercise.html"
 
+
+def new_workout(request):
+    if request.method == "POST":
+        workout = PostWorkout(request.POST)
+        if workout.is_valid():
+            workout.save()
+            return redirect("exercise_logs")
+    else:
+        workout = PostWorkout()
+    return render(request, "exercise_logs/new_workout.html", {"workout": workout})
+
+# def add_exercise(request, workout_id):
+#     exercise = get_object_or_404(Exercise, fk=workout_id)
+#     if request.method == "POST":
+#         exercise = PostExercise(request.POST)
+#         if exercise.is_valid():
+#             exercise.save()
+#             return redirect("exercise_logs/{{workout_id}}.html")
+#     else:
+#         exercise = PostExercise()
+#     return render(request, "exercise_logs/{{workout_id}}.html", {"exercise": exercise})
 
 def addset(request, workout_id):
     workout = get_object_or_404(Workout, pk=workout_id)
@@ -43,3 +70,5 @@ def addset(request, workout_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
     #return HttpResponse("You're adding a set onto exercise %s." % exercise_id)
+
+

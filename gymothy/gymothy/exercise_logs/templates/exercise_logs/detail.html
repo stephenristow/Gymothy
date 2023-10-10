@@ -1,21 +1,59 @@
-<form action="{% url 'exercise_logs:set' workout.id %}" method="post">
+{% extends 'base.html' %}
+{% block content %}Workout - {{ workout.workout_text}} 
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Workout Date</th>
+                <th scope="col">Workout Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ workout.workout_date }}</td>
+                <td>{{ workout.workout_text }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% for exercise in workout.exercise_set.all %}
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                     <th scope="col">#</th> 
+                    <th scope="col">Exercise</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">Weight Type</th>
+                    <th scope="col">Rep(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <th scope="row">{{ loop.counter }}</th>
+                    <td>{{ exercise.exercise_text }}</td>
+                    <td>{{ exercise.weight_num }}</td>
+                    <td>{{ exercise.weight_type }}</td>
+                    <td>{{ exercise.rep_num }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
+<a href="{% url 'exercise_logs:exercise' workout.id %}" class="btn btn-danger btn-small" >Add Exercise</a>
+<a href="{% url 'exercise_logs:index' %}">Home</a> 
+{% endblock %}
+    
+{% comment %} <form action="{% url 'exercise_logs:set' workout.id %}" method="post">
     {% csrf_token %}
     <fieldset>
         <legend><h1>{{ workout.workout_text }}</h1></legend>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         {% for exercise in workout.exercise_set.all %}
             <input type="radio" name="exercise" id="exercise{{ forloop.counter }}" value="{{ exercise.id }}">
-            <label for="exercise{{ forloop.counter }}">{{ exercise.exercise_text }}</label><br>
+            <label for="exercise{{ forloop.counter }}">{{ exercise.exercise_text }} -- {{ exercise.weight_num }}{{ exercise.weight_type }} -- {{ exercise.set_num }} set{{ exercise.set_num|pluralize }} -- {{ exercise.rep_num }} rep{{ exercise.rep_num|pluralize }}</label><br>
         {% endfor %}
     </fieldset>
     <input type="submit" value="Add Set">
-    </form>
+    </form> {% endcomment %}
 
 
-
-<!-- <h1>{{ workout.workout_text }}</h1>
-<ul>
-{% for exercise in workout.exercise_set.all %}
-    <li>{{ exercise.exercise_text }}</li>
-{% endfor %}
-</ul> -->

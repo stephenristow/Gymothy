@@ -1,0 +1,21 @@
+<form action="{% url 'exercise_logs:exercise' workout.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ workout.workout_text }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for exercise in workout.exercise_set.all %}
+            <input type="radio" name="exercise" id="exercise{{ forloop.counter }}" value="{{ exercise.id }}">
+            <label for="exercise{{ forloop.counter }}">{{ exercise.exercise_text }} -- {{ exercise.weight_num }}{{ exercise.weight_type }} -- {{ exercise.set_num }} set{{ exercise.set_num|pluralize }} -- {{ exercise.rep_num }} rep{{ exercise.rep_num|pluralize }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Add Set">
+    </form>
+
+
+
+<!-- <h1>{{ workout.workout_text }}</h1>
+<ul>
+{% for exercise in workout.exercise_set.all %}
+    <li>{{ exercise.exercise_text }}</li>
+{% endfor %}
+</ul> -->

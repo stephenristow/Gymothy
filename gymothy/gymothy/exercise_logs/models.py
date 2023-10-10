@@ -18,6 +18,7 @@ class Exercise(models.Model):
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     #exercise name
     exercise_text = models.CharField(max_length=200)
+    exercise_date = models.DateTimeField("date of exercise", default=timezone.now())
 
     #weights, sets & reps
     weight_num = models.IntegerField(default=0)
