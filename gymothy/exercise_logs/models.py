@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Workout(models.Model):
     workout_text = models.CharField(max_length=200)
-    workout_date = models.DateTimeField("date of workout")
+    workout_date = models.DateTimeField("date of workout", auto_now_add=True)
     def __str__(self):
         return self.workout_text
     

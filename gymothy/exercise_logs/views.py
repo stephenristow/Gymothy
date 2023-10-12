@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views import generic
 from django.template import loader
 
+#Forms and Models
 from .forms import WorkoutForm#, ExerciseForm
 from exercise.forms import ExerciseForm
 from .models import Workout
@@ -30,9 +31,9 @@ def WorkoutDetails(request, workout_id):
         if form.is_valid():
             exercise = form.save(commit=False)
             exercise.workout = workout
-            exercises.user = user
+            exercise.user = user
             exercise.save()
-            return redirect("exercise_logs/{{workout_id}}.html")
+            return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
     else:
         form = ExerciseForm()
 
@@ -41,6 +42,9 @@ def WorkoutDetails(request, workout_id):
 
     context = {
         'workout': workout,
+        'form': form,
+        'exercises': exercises,
+        
     }
     return HttpResponse(template.render(context, request))
 
@@ -58,7 +62,7 @@ def new_workout(request):
             return redirect("exercise_logs")
     else:
         workout = WorkoutForm()
-    return render(request, "exercise_logs/new_workout.html", {"workout": workout})
+    return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))#render(request, "exercise_logs/new_workout.html", {"workout": workout})
 
 # def add_exercise(request, workout_id):
 #     exercise = get_object_or_404(Exercise, fk=workout_id)
