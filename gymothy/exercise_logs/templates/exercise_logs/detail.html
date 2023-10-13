@@ -25,6 +25,7 @@
                         <th scope="col">Exercise</th>
                         <th scope="col">Weight</th>
                         <th scope="col">Weight Type</th>
+                        <th scope="col">Set(s)</th>
                         <th scope="col">Rep(s)</th>
                     </tr>
                 </thead>
@@ -35,6 +36,7 @@
                         <td>{{ exercise.exercise_text }}</td>
                         <td>{{ exercise.weight_num }}</td>
                         <td>{{ exercise.weight_type }}</td>
+                        <td>{{ exercise.set_num }}</td>
                         <td>{{ exercise.rep_num }}</td>
                     </tr>
                 </tbody>
@@ -60,7 +62,7 @@
             {% csrf_token %}
         <div class="field">
             <p class="control">
-                {{ exercise_text }} {% comment %}{{ weight_num }} {{ weight_type }} {{ set_num }} {{ rep_num }} {% endcomment %}
+                {{ form.exercise_text }} {{ form.weight_num }} {{ form.weight_type }} {{ form.set_num }} {{ form.rep_num }} 
             </p>
         </div>
         <div class="field">
