@@ -3,6 +3,9 @@ import datetime
 #from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.urls import reverse
+import uuid
 
 # from django.db.models.signals import post_save
 
@@ -30,8 +33,15 @@ from django.utils import timezone
 # WORKOUT
 
 class Workout(models.Model):
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     workout_text = models.CharField(max_length=200)
-    workout_date = models.DateTimeField("date of workout", auto_now_add=True)
+    workout_date = models.DateTimeField("date of workout", default=timezone.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first().pk)
+
+    def get_absolute_url(self):
+        return reverse("exercise_logs:detail", kwargs={"workout_id": self.id})
+    
+
     def __str__(self):
         return self.workout_text
     
