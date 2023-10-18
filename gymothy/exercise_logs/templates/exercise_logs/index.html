@@ -25,6 +25,15 @@
     {% else %}
         <p>No workouts have been complete.</p>  
     {% endif %}
+    <h2> Add New Workout</h2>
+    <form method="post">
+        <table>
+            {{ form.workout_text }}
+        </table>
+        {% csrf_token %}
+        <button type="submit">Create</button>
+    </form>
+    
     {% comment %} {% if latest_workout_list %}
         <ul>
         {% for workout in latest_workout_list %}
