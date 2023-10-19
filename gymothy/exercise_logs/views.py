@@ -16,7 +16,7 @@ from exercise.forms import ExerciseForm
 from .models import Workout
 from exercise.models import Exercise
 
-def Index(request):
+def index(request):
     user = request.user
     latest_workout_list = Workout.objects.order_by('-workout_date')
 
@@ -24,6 +24,7 @@ def Index(request):
         form = WorkoutForm(request.POST)
         if form.is_valid():
             workout = form.save(commit=False)
+            workout.user = user
             workout.save()
             return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
     else:

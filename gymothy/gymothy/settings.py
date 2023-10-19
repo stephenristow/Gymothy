@@ -127,7 +127,7 @@ MEDIA_URL = 'media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'exercise_logs:index'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = '/user/login/'
 
