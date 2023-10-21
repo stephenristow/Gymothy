@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Workout
-from exercise.models import Exercise
+from .models import Workout, Follow
+from exercise.models import Exercise, Tag
 
 class ExerciseInLine(admin.StackedInline):
     model = Exercise
@@ -15,3 +15,5 @@ class WorkoutAdmin(admin.ModelAdmin):
     inlines = [ExerciseInLine]
 
 admin.site.register(Workout, WorkoutAdmin)
+admin.site.register(Tag)
+admin.site.register(Follow)

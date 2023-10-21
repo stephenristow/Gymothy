@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 import uuid
 
-# from django.db.models.signals import post_save
+
+from django.db.models.signals import post_save
 
 # # USER
 
@@ -32,6 +33,7 @@ import uuid
 
 # WORKOUT
 
+
 class Workout(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     workout_text = models.CharField(max_length=200)
@@ -49,3 +51,22 @@ class Workout(models.Model):
         return self.workout_date >= timezone.now() - datetime.timedelta(days=1)
 
 
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+
+class Stream(models.Model):
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stream_following')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+
+    def add_workout(sender, instance, *args, **kwargs):
+        workout = instance
+        user = workout.user
+        followers = Follow.objects.all().filter(following=user)
+        for follower in followers:
+            stream = Stream(workout=workout, user=follower.follower, date=workout.workout_date, following=user)
+            stream.save()
+
+post_save.connect(Stream.add_workout, sender=Workout)
