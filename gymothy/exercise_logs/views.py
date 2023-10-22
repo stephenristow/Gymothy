@@ -1,4 +1,6 @@
 from typing import Any
+
+from django.contrib.auth.decorators import login_required
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,12 +15,20 @@ from django.contrib.auth.models import User
 #Forms and Models
 from .forms import WorkoutForm#, ExerciseForm
 from exercise.forms import ExerciseForm
-from .models import Workout
+from .models import Workout, Stream
 from exercise.models import Exercise
 
+@login_required
 def index(request):
     user = request.user
-    latest_workout_list = Workout.objects.order_by('-workout_date')
+    workouts = Stream.objects.filter(user=user)
+
+    group_ids = []
+
+    for workout in workouts:
+        group_ids.append(workout.workout_id)
+    
+    workout_items = Workout.objects.filter(id__in=workouts).all().order_by('-workout_date')
 
     if request.method == 'POST':
         form = WorkoutForm(request.POST)
@@ -35,7 +45,7 @@ def index(request):
 
     context = {
         'form': form,
-        'latest_workout_list': latest_workout_list,
+        'workout_items': workout_items,
         
     }
     return HttpResponse(template.render(context, request))
@@ -48,6 +58,7 @@ def index(request):
 #         #Return workest in order by workout_date
 #         return Workout.objects.order_by("-workout_date")
 
+@login_required
 def WorkoutDetails(request, workout_id):
     workout = get_object_or_404(Workout, id=workout_id)
     user = request.user
