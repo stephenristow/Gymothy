@@ -38,7 +38,7 @@ class Workout(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     workout_text = models.CharField(max_length=200)
     workout_date = models.DateTimeField("date of workout", default=timezone.now)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first().pk)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         return reverse("exercise_logs:detail", kwargs={"workout_id": self.id})

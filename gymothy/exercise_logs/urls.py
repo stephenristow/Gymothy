@@ -5,7 +5,9 @@ from . import views
 app_name = "exercise_logs"
 urlpatterns = [
     # ex: /exercise_logs/
-    path("", views.index, name="index"),
+    path("", views.index, name="index"),# ex: /exercise_logs/5/
+    # /my_workouts/
+    path("my_workouts", views.my_workouts, name="my_workouts"),
     # ex: /exercise_logs/5/
     path("<int:workout_id>/", views.WorkoutDetails, name="detail"),
     # ex: /exercise_logs/5/results/

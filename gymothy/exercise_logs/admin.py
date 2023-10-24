@@ -11,6 +11,7 @@ class WorkoutAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {"fields": ["workout_text"]}),
         ("Date information", {"fields": ["workout_date"], "classes": ["collapse"]}),
+        ("User information", {"fields": ["user"]}),
     ]
     inlines = [ExerciseInLine]
 

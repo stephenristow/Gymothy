@@ -50,6 +50,38 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required
+def my_workouts(request):
+    user = request.user
+    workouts = Stream.objects.filter(user=user)
+
+    group_ids = []
+
+    for workout in workouts:
+        group_ids.append(workout.workout_id)
+    
+    workout_items = Workout.objects.filter(id__in=workouts).all().order_by('-workout_date')
+
+    if request.method == 'POST':
+        form = WorkoutForm(request.POST)
+        if form.is_valid():
+            workout = form.save(commit=False)
+            workout.user = user
+            workout.save()
+            return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
+    else:
+        form = WorkoutForm()
+
+
+    template = loader.get_template("exercise_logs/index.html")
+
+    context = {
+        'form': form,
+        'workout_items': workout_items,
+        
+    }
+    return HttpResponse(template.render(context, request))
+
 # class IndexView(generic.ListView):
 #     template_name = "exercise_logs/index.html"
 #     context_object_name = "latest_workout_list"
