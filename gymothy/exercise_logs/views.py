@@ -28,7 +28,7 @@ def index(request):
     for workout in workouts:
         group_ids.append(workout.workout_id)
     
-    workout_items = Workout.objects.filter(id__in=workouts).all().order_by('-workout_date')
+    workout_items = Workout.objects.filter(id__in=group_ids).all().order_by('-workout_date')
 
     if request.method == 'POST':
         form = WorkoutForm(request.POST)
@@ -123,7 +123,7 @@ def WorkoutDetails(request, workout_id):
 #     model = Exercise
 #     template_name = "exercise_logs/exercise.html"
 
-
+@login_required
 def new_workout(request):
     user = request.user
     if request.method == "POST":
@@ -132,10 +132,19 @@ def new_workout(request):
             workout = form.save(commit=False)
             workout.user = user
             workout.save()
-            return redirect("exercise_logs")
+            return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
     else:
-        workout = WorkoutForm()
-    return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))#render(request, "exercise_logs/new_workout.html", {"workout": workout})
+        form = WorkoutForm()
+
+    template = loader.get_template("exercise_logs/new_workout.html")
+
+    context = {
+        'form': form,
+        
+    }
+    return HttpResponse(template.render(context, request))
+
+#render(request, "exercise_logs/new_workout.html", {"workout": workout})
 
 # def add_exercise(request, workout_id):
 #     exercise = get_object_or_404(Exercise, fk=workout_id)
