@@ -6,8 +6,10 @@ app_name = "exercise_logs"
 urlpatterns = [
     # ex: /exercise_logs/
     path("", views.index, name="index"),# ex: /exercise_logs/5/
-    # /my_workouts/
+    # /exercise_logs/my_workouts/
     path("my_workouts", views.my_workouts, name="my_workouts"),
+    # /exercise_logs/aboutus/
+    path("aboutus", views.aboutus, name="aboutus"),
     # ex: /exercise_logs/5/
     path("<int:workout_id>/", views.WorkoutDetails, name="detail"),
     # ex: /exercise_logs/5/results/

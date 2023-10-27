@@ -53,14 +53,7 @@ def index(request):
 @login_required
 def my_workouts(request):
     user = request.user
-    workouts = Stream.objects.filter(user=user)
-
-    group_ids = []
-
-    for workout in workouts:
-        group_ids.append(workout.workout_id)
-    
-    workout_items = Workout.objects.filter(id__in=workouts).all().order_by('-workout_date')
+    workouts = Workout.objects.filter(user=user).order_by('-workout_date')
 
     if request.method == 'POST':
         form = WorkoutForm(request.POST)
@@ -73,11 +66,11 @@ def my_workouts(request):
         form = WorkoutForm()
 
 
-    template = loader.get_template("exercise_logs/index.html")
+    template = loader.get_template("exercise_logs/my_workouts.html")
 
     context = {
         'form': form,
-        'workout_items': workout_items,
+        'workouts': workouts,
         
     }
     return HttpResponse(template.render(context, request))
@@ -140,6 +133,13 @@ def new_workout(request):
 
     context = {
         'form': form,
+        
+    }
+    return HttpResponse(template.render(context, request))
+
+def aboutus(request):
+    template = loader.get_template("exercise_logs/aboutus.html")
+    context = {
         
     }
     return HttpResponse(template.render(context, request))
