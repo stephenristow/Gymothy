@@ -86,6 +86,7 @@ def UserProfile(request, username):
 
 
 def Signup(request):
+	user = request.user
 	if request.method == 'POST':
 		form = SignupForm(request.POST)
 		if form.is_valid():
@@ -93,12 +94,13 @@ def Signup(request):
 			email = form.cleaned_data.get('email')
 			password = form.cleaned_data.get('password')
 			User.objects.create_user(username=username, email=email, password=password)
-			return redirect('/exercise_logs/index.html')
+			return redirect('exercise_logs:index')
 	else:
 		form = SignupForm()
 	
 	context = {
 		'form':form,
+		'user': user,
 	}
 
 	return render(request, 'signup.html', context)
