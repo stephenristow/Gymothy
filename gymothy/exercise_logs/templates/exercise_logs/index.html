@@ -5,6 +5,24 @@
     {% if workout_items %}
         <ul>
         {% for workout in workout_items %}
+            <div class="container-sm my-5 justify-content-center">
+                <div class="row">
+                    <div class="col-sm-2 col-md-5 col-lg-6">
+                        <div class="p-1 bg-primary text-light">Workout Date</div>
+                    </div>
+                    <div class="col-sm-2 col-md-5 col-lg-6">
+                        <div class="p-1 bg-primary text-light">Workout Type</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-5 col-lg-6">
+                        <div class="p-1 bg-primary text-light">{{ workout.workout_date }}</div>
+                    </div>
+                    <div class="col-sm-2 col-md-5 col-lg-6">
+                        <div class="p-1 bg-primary text-light"><a href="{% url 'exercise_logs:detail' workout.id %}">{{ workout.workout_text }}</a></div>
+                    </div>
+                </div>
+            </div>
             <table class="table table-dark table-hover">
                 <thead>
                     <tr>
@@ -22,6 +40,7 @@
                 </tbody>
             </table>
         {% endfor %}
+        </ul>
     {% else %}
         <p>No workouts have been complete.</p>  
     {% endif %}
