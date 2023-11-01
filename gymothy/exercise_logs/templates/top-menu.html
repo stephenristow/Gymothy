@@ -2,7 +2,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{% url 'exercise_logs:index' %}">
         <img src="{% static 'images/one-muscle-hand-pixel-art-style_475147-2167.avif'%}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
         <img src="{% static 'images/wood-log-in-pixel-art-style-vector.jpg'%}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
         Exercise Logs
@@ -13,16 +13,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'exercise_logs:index' %}">Home</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{% url 'exercise_logs:my_workouts' %}">My Workouts</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'exercise_logs:new_workout' %}">Add Workout</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'exercise_logs:aboutus' %}">About Us</a>
+            <a class="nav-link" href="{% url 'exercise_logs:aboutus' %}">About</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/user/logout/">Log Out</a>
