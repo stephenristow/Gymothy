@@ -25,7 +25,6 @@
                         <th scope="col">Exercise</th>
                         <th scope="col">Weight</th>
                         <th scope="col">Weight Type</th>
-                        <th scope="col">Set(s)</th>
                         <th scope="col">Rep(s)</th>
                     </tr>
                 </thead>
@@ -36,7 +35,6 @@
                         <td>{{ exercise.exercise_text }}</td>
                         <td>{{ exercise.weight_num }}</td>
                         <td>{{ exercise.weight_type }}</td>
-                        <td>{{ exercise.set_num }}</td>
                         <td>{{ exercise.rep_num }}</td>
                     </tr>
                 </tbody>
@@ -67,7 +65,7 @@
         </div>
         <div class="field">
             <p class="control">
-                <button type="submit" name="action" class="button">Add Exercise</button>
+                <button type="submit" name="save-exercise" class="button">Add Exercise</button>
             </p>
         </div>
         </form>

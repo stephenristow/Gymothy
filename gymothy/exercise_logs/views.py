@@ -15,8 +15,10 @@ from django.contrib.auth.models import User
 #Forms and Models
 from .forms import WorkoutForm#, ExerciseForm
 from exercise.forms import ExerciseForm
+from set.forms import SetForm
 from .models import Workout, Stream
 from exercise.models import Exercise
+from set.models import Set
 
 @login_required
 def index(request):
@@ -88,15 +90,24 @@ def WorkoutDetails(request, workout_id):
     workout = get_object_or_404(Workout, id=workout_id)
     user = request.user
     exercises = Exercise.objects.filter(workout=workout).order_by('exercise_date')
+    sets = Set.objects.filter(exercise__in=exercises).order_by('set_date')
 
     if request.method == 'POST':
-        form = ExerciseForm(request.POST)
-        if form.is_valid():
-            exercise = form.save(commit=False)
-            exercise.workout = workout
-            exercise.user = user
-            exercise.save()
-            return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
+        if 'save_exercise' in request.POST: 
+            form = ExerciseForm(request.POST)
+            if form.is_valid():
+                exercise = form.save(commit=False)
+                exercise.workout = workout
+                exercise.user = user
+                exercise.save()
+                return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
+        if 'save_set' in request.POST:
+            form = SetForm(request.POST)
+            if form.is_valid():
+                set = form.save(commit=False)
+                set.user = user
+                set.save()
+                return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
     else:
         form = ExerciseForm()
 
@@ -107,7 +118,7 @@ def WorkoutDetails(request, workout_id):
         'workout': workout,
         'form': form,
         'exercises': exercises,
-        
+        'sets': sets,
     }
     return HttpResponse(template.render(context, request))
 

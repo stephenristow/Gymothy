@@ -31,6 +31,9 @@ class Set(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    #DateTime for ordering
+    set_time = models.DateTimeField("date of set", auto_now_add=True)
+
     #Tags
     tags = models.ManyToManyField(Tag, related_name='tags')
 
