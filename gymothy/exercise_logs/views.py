@@ -90,7 +90,7 @@ def WorkoutDetails(request, workout_id):
     workout = get_object_or_404(Workout, id=workout_id)
     user = request.user
     exercises = Exercise.objects.filter(workout=workout).order_by('exercise_date')
-    sets = Set.objects.filter(exercise__in=exercises).order_by('set_date')
+    sets = Set.objects.filter(exercise__in=exercises).order_by('set_time')
 
     if request.method == 'POST':
         if 'save_exercise' in request.POST: 
