@@ -92,31 +92,33 @@ def WorkoutDetails(request, workout_id):
     exercises = Exercise.objects.filter(workout=workout).order_by('exercise_date')
     sets = Set.objects.filter(exercise__in=exercises).order_by('set_time')
 
+    exercise_form = ExerciseForm()
+    set_form = SetForm()
     if request.method == 'POST':
         if 'save_exercise' in request.POST: 
-            form = ExerciseForm(request.POST)
-            if form.is_valid():
-                exercise = form.save(commit=False)
+            exercise_form = ExerciseForm(request.POST)
+            if exercise_form.is_valid():
+                exercise = exercise_form.save(commit=False)
                 exercise.workout = workout
                 exercise.user = user
                 exercise.save()
-                return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
-        if 'save_set' in request.POST:
-            form = SetForm(request.POST)
-            if form.is_valid():
-                set = form.save(commit=False)
+                #return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
+        elif 'save_set' in request.POST:
+            set_form = SetForm(request.POST)
+            if set_form.is_valid():
+                set = set_form.save(commit=False)
                 set.user = user
                 set.save()
-                return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
-    else:
-        form = ExerciseForm()
+                #return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
+        
 
 
     template = loader.get_template("exercise_logs/detail.html")
 
     context = {
         'workout': workout,
-        'form': form,
+        'exercise_form': exercise_form,
+        'set_form': set_form,
         'exercises': exercises,
         'sets': sets,
     }

@@ -115,12 +115,12 @@
             {% csrf_token %}
         <div class="field">
             <p class="control">
-                {{ form.exercise_text }} {{ form.weight_num }} {{ form.weight_type }} {{ form.set_num }} {{ form.rep_num }} 
+                {{ exercise_form.exercise_text }} {% comment %}  {{ form.weight_num }} {{ form.weight_type }} {{ form.set_num }} {{ form.rep_num }}  {% endcomment %}
             </p>
         </div>
         <div class="field">
             <p class="control">
-                <button type="submit" name="save-exercise" class="button">Add Exercise</button>
+                <button type="submit" name="save_exercise" class="button">Add Exercise</button>
             </p>
         </div>
         </form>
