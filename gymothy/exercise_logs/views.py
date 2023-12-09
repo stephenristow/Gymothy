@@ -107,6 +107,9 @@ def WorkoutDetails(request, workout_id):
             set_form = SetForm(request.POST)
             if set_form.is_valid():
                 set = set_form.save(commit=False)
+                exercise_id = request.POST.get('exercise_id')
+                exercise = Exercise.objects.get(id=exercise_id)
+                set.exercise = exercise
                 set.user = user
                 set.save()
                 #return HttpResponseRedirect(reverse("exercise_logs:detail", args=(workout.id,)))
